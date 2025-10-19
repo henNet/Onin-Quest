@@ -46,7 +46,8 @@ public class MoveController : MonoBehaviour
     {
         CollisionCheck();
         AnminationControls();
-        FlipController();
+        // FlipController();
+        FlipMouseController();
 
         moveInput = moveAction.ReadValue<Vector2>();
 
@@ -92,6 +93,16 @@ public class MoveController : MonoBehaviour
             Flip();
     }
 
+    private void FlipMouseController()
+    {
+        Vector3 mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+
+        if (mousePos.x > transform.position.x && !facingRight)
+            Flip();
+        else if (mousePos.x < transform.position.x && facingRight)
+            Flip();
+    }
+
     private void Flip()
     {
         facingRight = !facingRight;
@@ -101,7 +112,7 @@ public class MoveController : MonoBehaviour
     private void CollisionCheck()
     {
         isGrounded =
-        Physics2D.OverlapCircle(groundCheck.position, groundCheckRadius, layerGroundMask) 
+        Physics2D.OverlapCircle(groundCheck.position, groundCheckRadius, layerGroundMask)
         ? true : false;
     }
 
