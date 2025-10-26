@@ -1,13 +1,8 @@
 using UnityEngine;
-using UnityEngine.InputSystem;
 
 public class MoveController : MonoBehaviour
 {
-    // public InputActionAsset inputActions;
     private InputController input;
-
-    // private InputAction moveAction;
-    // private InputAction jumpAction;
 
     private Vector2 moveInput;
 
@@ -24,27 +19,13 @@ public class MoveController : MonoBehaviour
 
     private bool facingRight = true;
 
-    // private void OnEnable()
-    // {
-    //     inputActions.FindActionMap("Player").Enable();
-    // }
-
-    // private void OnDisable()
-    // {
-    //     inputActions.FindActionMap("Player").Disable();
-    // }
-
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Awake()
     {
-        // moveAction = InputSystem.actions.FindAction("Move");
-        // jumpAction = InputSystem.actions.FindAction("Jump");
         rigidBody = GetComponent<Rigidbody2D>();
         animator = GetComponent<Animator>();
         input = GetComponent<InputController>();
     }
 
-    // Update is called once per frame
     void Update()
     {
         CollisionCheck();
@@ -52,9 +33,8 @@ public class MoveController : MonoBehaviour
         FlipController();
         // FlipMouseController();
 
-        // moveInput = moveAction.ReadValue<Vector2>();
-        moveInput = input.GetMoveAction();
-        // moveInput.x = Input.GetAxis("Horizontal");
+        // moveInput = input.GetMoveAction();
+        moveInput = input.GetMoveActionOld();
 
         Jump();
     }
@@ -73,7 +53,6 @@ public class MoveController : MonoBehaviour
 
     void Jump()
     {
-        // if (isGrounded && jumpAction.WasPressedThisFrame())
         if (isGrounded && input.GetJumpAction())
         {
             rigidBody.AddForceAtPosition(
@@ -120,6 +99,11 @@ public class MoveController : MonoBehaviour
         isGrounded =
         Physics2D.OverlapCircle(groundCheck.position, groundCheckRadius, layerGroundMask)
         ? true : false;
+    }
+
+    public void StartDeath()
+    {
+        animator.SetTrigger("Dead");
     }
 
     private void OnDrawGizmos()

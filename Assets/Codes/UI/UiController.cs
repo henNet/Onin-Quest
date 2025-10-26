@@ -13,6 +13,9 @@ public class UiController : MonoBehaviour
 
     private int scoreValue = 0;
 
+    [Header("Hearts")]
+    [SerializeField] private Image[] heartSprites;
+
     void Awake() => instance = this;
 
     void Update()
@@ -27,6 +30,16 @@ public class UiController : MonoBehaviour
     {
         scoreValue++;
         scoreText.text = scoreValue.ToString();
+    }
+
+    public void DisableHeart(int index)
+    {
+        heartSprites[index].gameObject.SetActive(false);
+    }
+
+    public void CheckGameOver()
+    {
+
     }
 
     public void EnableGameOverButton()

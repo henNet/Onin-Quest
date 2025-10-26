@@ -31,6 +31,11 @@ public class InputController : MonoBehaviour
         return moveAction.ReadValue<Vector2>();
     }
 
+    public Vector2 GetMoveActionOld()
+    {
+        return new Vector2(Input.GetAxis("Horizontal"), 0f);
+    }
+
     public bool GetJumpAction()
     {
         return jumpAction.WasPressedThisFrame();
