@@ -7,7 +7,7 @@ public class DeadZoneController : MonoBehaviour
     {
         if (collision.tag == "Target" || collision.tag == "Player")
         {
-            Time.timeScale = 0;
+            UiController.instance.EnableGameOverButton();
             Debug.Log("Game Over");
         }
     }

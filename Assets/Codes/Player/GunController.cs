@@ -2,6 +2,8 @@ using UnityEngine;
 
 public class GunController : MonoBehaviour
 {
+    private InputController input;
+
     [SerializeField] private Animator animator;
     [SerializeField] private Transform gun;
     [SerializeField] private float gunDistance = 1.5f;
@@ -13,6 +15,11 @@ public class GunController : MonoBehaviour
     [SerializeField] private float speedBullet;
     [SerializeField] private int currentBullets = 15;
     [SerializeField] private int maxBullets = 15;
+
+    void Awake()
+    {
+        input = GetComponent<InputController>();
+    }
 
     // Update is called once per frame
     void Update()
@@ -30,8 +37,9 @@ public class GunController : MonoBehaviour
 
         GunFlipController(mousePos);
 
-        if ((Input.GetKeyDown(KeyCode.Mouse0) ||
-            Input.GetButtonDown("Fire2")) && HasGunBullets())
+        // if ((Input.GetKeyDown(KeyCode.Mouse0) ||
+        //     Input.GetButtonDown("Fire2")) && HasGunBullets())
+        if (input.GetShootAction() && HasGunBullets())
         {
             Shoot(direction);
         }

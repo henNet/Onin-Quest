@@ -3,10 +3,11 @@ using UnityEngine.InputSystem;
 
 public class MoveController : MonoBehaviour
 {
-    public InputActionAsset inputActions;
+    // public InputActionAsset inputActions;
+    private InputController input;
 
-    private InputAction moveAction;
-    private InputAction jumpAction;
+    // private InputAction moveAction;
+    // private InputAction jumpAction;
 
     private Vector2 moveInput;
 
@@ -23,23 +24,24 @@ public class MoveController : MonoBehaviour
 
     private bool facingRight = true;
 
-    private void OnEnable()
-    {
-        inputActions.FindActionMap("Player").Enable();
-    }
+    // private void OnEnable()
+    // {
+    //     inputActions.FindActionMap("Player").Enable();
+    // }
 
-    private void OnDisable()
-    {
-        inputActions.FindActionMap("Player").Disable();
-    }
+    // private void OnDisable()
+    // {
+    //     inputActions.FindActionMap("Player").Disable();
+    // }
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Awake()
     {
-        moveAction = InputSystem.actions.FindAction("Move");
-        jumpAction = InputSystem.actions.FindAction("Jump");
+        // moveAction = InputSystem.actions.FindAction("Move");
+        // jumpAction = InputSystem.actions.FindAction("Jump");
         rigidBody = GetComponent<Rigidbody2D>();
         animator = GetComponent<Animator>();
+        input = GetComponent<InputController>();
     }
 
     // Update is called once per frame
@@ -47,10 +49,12 @@ public class MoveController : MonoBehaviour
     {
         CollisionCheck();
         AnminationControls();
-        // FlipController();
-        FlipMouseController();
+        FlipController();
+        // FlipMouseController();
 
-        moveInput = moveAction.ReadValue<Vector2>();
+        // moveInput = moveAction.ReadValue<Vector2>();
+        moveInput = input.GetMoveAction();
+        // moveInput.x = Input.GetAxis("Horizontal");
 
         Jump();
     }
@@ -69,7 +73,8 @@ public class MoveController : MonoBehaviour
 
     void Jump()
     {
-        if (isGrounded && jumpAction.WasPressedThisFrame())
+        // if (isGrounded && jumpAction.WasPressedThisFrame())
+        if (isGrounded && input.GetJumpAction())
         {
             rigidBody.AddForceAtPosition(
                 new Vector2(0f, jumpForce), Vector2.up, ForceMode2D.Impulse);
