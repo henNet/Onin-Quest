@@ -12,6 +12,7 @@ public class MoveController : MonoBehaviour
 
     private Rigidbody2D rigidBody;
     [SerializeField] private float moveSpeed;
+    [SerializeField] private float jumpForce;
 
     private Animator animator;
 
@@ -71,7 +72,7 @@ public class MoveController : MonoBehaviour
         if (isGrounded && jumpAction.WasPressedThisFrame())
         {
             rigidBody.AddForceAtPosition(
-                new Vector2(0f, 5f), Vector2.up, ForceMode2D.Impulse);
+                new Vector2(0f, jumpForce), Vector2.up, ForceMode2D.Impulse);
         }
     }
 

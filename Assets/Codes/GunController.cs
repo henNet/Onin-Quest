@@ -11,6 +11,8 @@ public class GunController : MonoBehaviour
     [Header("Bullet")]
     [SerializeField] private GameObject bulletPrefab;
     [SerializeField] private float speedBullet;
+    [SerializeField] private int currentBullets = 15;
+    [SerializeField] private int maxBullets = 15;
 
     // Update is called once per frame
     void Update()
@@ -28,7 +30,8 @@ public class GunController : MonoBehaviour
 
         GunFlipController(mousePos);
 
-        if (Input.GetKeyDown(KeyCode.Mouse0))
+        if ((Input.GetKeyDown(KeyCode.Mouse0) ||
+            Input.GetButtonDown("Fire2")) && HasGunBullets())
         {
             Shoot(direction);
         }
@@ -61,5 +64,13 @@ public class GunController : MonoBehaviour
             direction.normalized * speedBullet;
 
         Destroy(newBullet, 3f);
+    }
+
+    private bool HasGunBullets()
+    {
+        // if (currentBullets <= 0) return false;
+
+        // currentBullets--;
+        return true;
     }
 }
