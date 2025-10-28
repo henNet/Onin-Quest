@@ -16,7 +16,8 @@ public class DeadZoneController : MonoBehaviour
         if (collision.tag == "Target")
         {
             totalHearts--;
-            UiController.instance.DisableHeart(totalHearts);
+            if (totalHearts >= 0)
+                UiController.instance.DisableHeart(totalHearts);
 
             if (totalHearts == 0)
             {

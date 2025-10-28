@@ -16,24 +16,38 @@ public class GunController : MonoBehaviour
     [SerializeField] private int currentBullets = 15;
     [SerializeField] private int maxBullets = 15;
 
+    private GameObject[] targets;
+    private GameObject targetFood;
+
     void Awake()
     {
         input = GetComponent<InputController>();
     }
 
-    // Update is called once per frame
     void Update()
     {
-        Vector3 mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+        /* TODO: Refatorar condicionando ao uso de um collider */
+        FindClosestTarget();
+
+        // Vector3 mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+        Vector3 mousePos = targetFood != null ?
+            new Vector3(targetFood.transform.position.x, targetFood.transform.position.y, 0) :
+            Vector3.zero;
+
         Vector3 direction = mousePos - transform.position;
+        float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
 
         gun.rotation = Quaternion.Euler(
-            new Vector3(0, 0, Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg));
+            new Vector3(0, 0, angle));
 
-        float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
         gun.position =
             transform.position +
             Quaternion.Euler(0, 0, angle) * new Vector3(gunDistance, 0, 0);
+
+        // Quaternion rotationToEnemy = Quaternion.LookRotation(direction.normalized);
+
+        // gun.rotation =
+        //     Quaternion.Lerp(gun.rotation, rotationToEnemy, 2 * Time.deltaTime);
 
         GunFlipController(mousePos);
 
@@ -72,6 +86,8 @@ public class GunController : MonoBehaviour
             direction.normalized * speedBullet;
 
         Destroy(newBullet, 3f);
+
+        AudioController.instance.PlayGunShoot();
     }
 
     private bool HasGunBullets()
@@ -80,5 +96,31 @@ public class GunController : MonoBehaviour
 
         // currentBullets--;
         return true;
+    }
+
+    private void FindClosestTarget()
+    {
+        // Encontra todos os inimigos na cena
+        targets = GameObject.FindGameObjectsWithTag("Target");
+
+        if (targets.Length > 0)
+        {
+            float closestDistance = Mathf.Infinity;
+            GameObject closestTarget = null;
+
+            foreach (GameObject target in targets)
+            {
+                float distance =
+                    Vector3.Distance(transform.position, target.transform.position);
+
+                if (distance < closestDistance)
+                {
+                    closestDistance = distance;
+                    closestTarget = target;
+                }
+            }
+
+            targetFood = closestTarget;
+        }
     }
 }

@@ -13,6 +13,7 @@ public class BulletController : MonoBehaviour
             Destroy(gameObject);
             Destroy(collision.gameObject);
             UiController.instance.AddScore();
+            AudioController.instance.PlayTargetHit();
         }
     }
 }
