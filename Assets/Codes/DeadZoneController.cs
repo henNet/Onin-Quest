@@ -1,10 +1,13 @@
-using System.Xml.Serialization;
 using UnityEngine;
 
 public class DeadZoneController : MonoBehaviour
 {
     private GameObject player;
     public int totalHearts = 4;
+
+    [Header("Hit/Camera Shake")]
+    [SerializeField] private Animator animCamera;
+    [SerializeField] private GameObject hitPanel;
 
     void Awake()
     {
@@ -25,13 +28,24 @@ public class DeadZoneController : MonoBehaviour
                 Invoke(nameof(EnableGameOverButton), 1f);
                 player.GetComponent<MoveController>().StartDeath();
                 player.GetComponent<MoveController>().enabled = false;
+                AudioController.instance.PlayDeathSound();
             }
+
+            AudioController.instance.PlayHitSound();
+            animCamera.SetTrigger("Shake");
+            hitPanel.gameObject.SetActive(true);
+            Invoke(nameof(DisableHitPanel), 0.2f);
         }
     }
 
     private void DisablePlayer()
     {
         player.gameObject.SetActive(false);
+    }
+
+    private void DisableHitPanel()
+    {
+        hitPanel.gameObject.SetActive(false);
     }
 
     private void EnableGameOverButton()

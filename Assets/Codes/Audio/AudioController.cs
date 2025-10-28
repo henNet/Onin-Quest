@@ -6,6 +6,8 @@ public class AudioController : MonoBehaviour
 
     [SerializeField] private AudioSource gunShoot;
     [SerializeField] private AudioSource targetHit;
+    [SerializeField] private AudioSource death;
+    [SerializeField] private AudioSource hit;
 
     void Awake()
     {
@@ -38,5 +40,15 @@ public class AudioController : MonoBehaviour
 
         // Optionally, destroy the GameObject after the sound finishes playing
         Destroy(soundGameObject, audio.clip.length);
+    }
+
+    public void PlayDeathSound()
+    {
+        death.Play();
+    }
+
+    public void PlayHitSound()
+    {
+        hit.Play();
     }
 }
